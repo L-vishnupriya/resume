@@ -1,0 +1,94 @@
+// Abstract Class
+abstract class Shape {
+  def area(): Double   // abstract method
+}
+
+// Trait for displaying info
+trait DisplayInfo {
+  def showInfo(): Unit
+}
+
+// Circle Class
+class Circle(val radius: Double) extends Shape with DisplayInfo {
+  override def area(): Double = Math.PI * radius * radius
+
+  def showInfo(): Unit = {
+    println(s"Circle -> Radius: $radius, Area: ${area()}")
+  }
+}
+
+// Rectangle Class
+class Rectangle(val width: Double, val height: Double) extends Shape with DisplayInfo {
+  override def area(): Double = width * height
+
+  def showInfo(): Unit = {
+    println(s"Rectangle -> Width: $width, Height: $height, Area: ${area()}")
+  }
+}
+
+// Main Object to Run the Program
+object ShapesDemo {
+  def main(args: Array[String]): Unit = {
+    val circle = new Circle(5.0)
+    val rectangle = new Rectangle(4.0, 6.0)
+
+    circle.showInfo()
+    rectangle.showInfo()
+  }
+}
+
+
+object FunctionalCollections {
+
+  def main(args: Array[String]): Unit = {
+
+    // -------------------------- //
+    // 1. Immutable List
+    // -------------------------- //
+    val numbers = List(5, 1, 8, 3, 2)
+
+    val squared = numbers.map(x => x * x)
+    val evens = numbers.filter(_ % 2 == 0)
+    val sum = numbers.reduce(_ + _)
+    val sorted = numbers.sorted
+
+    println("Original List:     " + numbers)
+    println("Squared List:      " + squared)
+    println("Even Numbers:      " + evens)
+    println("Sum (reduce):      " + sum)
+    println("Sorted List:       " + sorted)
+
+
+    // -------------------------- //
+    // 2. Immutable Set
+    // -------------------------- //
+    val fruits = Set("apple", "banana", "orange", "banana") // duplicate removed
+
+    val upperFruits = fruits.map(_.toUpperCase)
+    val longNames = fruits.filter(_.length > 5)
+
+    println("\nOriginal Set:      " + fruits)
+    println("Uppercase Set:     " + upperFruits)
+    println("Long Fruit Names:  " + longNames)
+
+
+    // -------------------------- //
+    // 3. Immutable Map
+    // -------------------------- //
+    val scores = Map("Rahul" -> 85, "Priya" -> 92, "Kumar" -> 78)
+
+    val bonusScores = scores.mapValues(_ + 5)
+    val passed = scores.filter(_._2 >= 80)
+    val totalScore = scores.values.fold(0)(_ + _)
+
+    println("\nOriginal Map:      " + scores)
+    println("Bonus Scores:      " + bonusScores)
+    println("Passed Students:   " + passed)
+    println("Total Score:       " + totalScore)
+  }
+}
+
+
+
+scalac FunctionalCollections.scala
+scala FunctionalCollections

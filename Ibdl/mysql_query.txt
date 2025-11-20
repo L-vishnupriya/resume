@@ -1,0 +1,59 @@
+CREATE TABLE Customer (
+    CustomerID INT PRIMARY KEY,
+    CustomerName VARCHAR(50),
+    Region VARCHAR(50)
+);
+
+CREATE TABLE Product (
+    ProductID INT PRIMARY KEY,
+    ProductName VARCHAR(50),
+    Category VARCHAR(50)
+);
+
+CREATE TABLE Sales (
+    SalesID INT PRIMARY KEY,
+    CustomerID INT,
+    ProductID INT,
+    Quantity INT,
+    Price DECIMAL(10,2),
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
+);
+
+
+INSERT INTO Customer VALUES
+(1, 'Rahul', 'North'),
+(2, 'Sanya', 'South'),
+(3, 'Mukesh', 'West');
+
+INSERT INTO Product VALUES
+(101, 'Laptop', 'Electronics'),
+(102, 'Headphones', 'Electronics'),
+(103, 'Rice Bag', 'Grocery');
+
+INSERT INTO Sales VALUES
+(1001, 1, 101, 2, 45000),
+(1002, 2, 101, 1, 45000),
+(1003, 3, 102, 3, 2000),
+(1004, 1, 103, 5, 1200),
+(1005, 2, 103, 2, 1200);
+
+#total sales by product 
+
+SELECT 
+    p.Category,
+    SUM(s.Quantity * s.Price) AS TotalSales
+FROM Sales s
+JOIN Product p ON s.ProductID = p.ProductID
+GROUP BY p.Category;
+
+#total sales by customer
+
+SELECT 
+    c.Region,
+    SUM(s.Quantity * s.Price) AS TotalSales
+FROM Sales s
+JOIN Customer c ON s.CustomerID = c.CustomerID
+GROUP BY c.Region;
+
+

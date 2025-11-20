@@ -1,0 +1,59 @@
+hdfs dfs -mkdir /wordcount_input
+
+
+echo "hadoop is big data hadoop is fast" > sample.txt
+
+hdfs dfs -put sample.txt /wordcount_input/
+
+hdfs dfs -ls /wordcount_input
+
+mapper.py :
+
+#!/usr/bin/env python3
+import sys
+
+for line in sys.stdin:
+    words = line.strip().split()
+    for word in words:
+        print(f"{word}\t1")
+
+
+reducer.py :
+
+#!/usr/bin/env python3
+import sys
+
+current_word = None
+current_count = 0
+
+for line in sys.stdin:
+    word, count = line.strip().split('\t')
+
+    count = int(count)
+
+    if current_word == word:
+        current_count += count
+    else:
+        if current_word:
+            print(f"{current_word}\t{current_count}")
+        current_word = word
+        current_count = count
+
+if current_word:
+    print(f"{current_word}\t{current_count}")
+
+
+
+chmod +x mapper.py reducer.py
+
+hadoop jar /home/manikandan/hadoop/share/hadoop/tools/lib/hadoop-streaming-
+3.3.6.jar -input /user/manikandan/input -output /user/manikandan/output_mapcount -
+mapper /home/manikandan/hadoop_mapcount/mapper.py -reducer
+/home/manikandan/hadoop_mapcount/reducer.py
+
+hdfs dfs -cat /user/manikandan/output_mapcount/part-00000
+
+NameNode: http://localhost:9870
+ResourceManager: http://localhost:8088
+
+

@@ -1,0 +1,64 @@
+mvn archetype:generate -DgroupId=com.example \
+-DartifactId=maven-demo \
+-DarchetypeArtifactId=maven-archetype-quickstart \
+-DinteractiveMode=false
+
+
+this creates this :
+
+maven-demo/
+ ├── src/
+ │    └── main/java/com/example/App.java
+ ├── pom.xml
+
+
+nano pom.xml
+
+<dependencies>
+    <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>2.10.1</version>
+    </dependency>
+</dependencies>
+
+
+
+open to this folder : src/main/java/com/example/App.java
+
+put this code :
+
+package com.example;
+
+import com.google.gson.Gson;
+
+public class App {
+    public static void main(String[] args) {
+        Gson gson = new Gson();
+
+        Student s = new Student("Rahul", 21);
+        String json = gson.toJson(s);
+
+        System.out.println("JSON Output: " + json);
+    }
+}
+
+class Student {
+    String name;
+    int age;
+
+    Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+
+
+
+mvn clean package
+
+mvn exec:java -Dexec.mainClass="com.example.App"
+ or
+mvn exec:java
+
+
